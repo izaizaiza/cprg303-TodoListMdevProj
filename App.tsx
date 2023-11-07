@@ -1,20 +1,23 @@
 /**
  * Sample React Native App
- * https://github.com/facebook/react-native
+ * To do List App
  *
  * @format
  */
 
-import React from 'react';
+import React, { Component, useState} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
+  Pressable,
   Text,
   useColorScheme,
   View,
+  TextInput,
+  Button
 } from 'react-native';
 
 import {
@@ -58,9 +61,36 @@ function Section({children, title}: SectionProps): JSX.Element {
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
+  // state variable for tasks
+  const [tasks, setTasks] = useState([
+    {id: 1, text: 'Task 1', completed: false},
+    {id: 2, text: 'Task 2', completed: false},
+    {id: 3, text: 'Task 3', completed: false},
+  ]);
+  // state variable for new task
+  const [newTask, setNewTask] = useState('');
+
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+
+
+  // add a handler for handling task
+  const handleAddTask = () => {
+
+    // create a new task
+    const task = {
+      id: tasks.length + 1,
+      text: newTask,
+      completed: false
+    }
+
+    // update the tasks
+    setTasks([...tasks, task]);
+
+    // reset the newTask
+    setNewTask('');
+  }
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -76,20 +106,27 @@ function App(): JSX.Element {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
+          <Section title="To Do List">
+            <View>
+              <TextInput
+                placeholder="Enter a task"
+                value={newTask}
+                onChangeText={text => setNewTask(text)}
+              />
+              <Button
+                title="Add Task"
+                onPress={handleAddTask}
+              />
+            </View>
+            <View>
+              {tasks.map(task => (
+                <View key={task.id}>
+                  <Text>{task.text}</Text>
+                </View>
+              ))}
+            </View>
           </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+
         </View>
       </ScrollView>
     </SafeAreaView>
