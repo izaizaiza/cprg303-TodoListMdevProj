@@ -7,14 +7,19 @@
 
 import React from 'react';
 
+import { useState } from 'react';
+
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   useColorScheme,
   View,
+  Button,
+  Pressable,
 } from 'react-native';
 
 import {
@@ -60,6 +65,34 @@ function App(){
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  //state variable for the new task
+  const [newTask, setNewTask] = React.useState('');
+
+  //state variable for addition of tasks
+  const [tasks, setTasks] = React.useState([
+    {id: 1, text: 'Task 1', completed: false},
+    {id: 2, text: 'Task 2', completed: false},
+    {id: 3, text: 'Task 3', completed: false},
+  ]);
+
+  // function to handle the addition of tasks
+    // add a handler for handling task
+    const handleAddTask = () => {
+
+      // create a new task
+      const task = {
+      id: tasks.length + 1,
+      text: newTask,
+      completed: false
+      }
+
+      // update the tasks
+      setTasks([...tasks, task]);
+
+      // reset the newTask
+      setNewTask('');
+  }
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
@@ -74,9 +107,18 @@ function App(){
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
+          <Section title="To do List">
+            <View>
+                <TextInput
+                placeholder='Enter a task'
+                onChange={text => setNewTask(text)}>
+                </TextInput>
+
+                <Button 
+                title='Add Task' onPress={handleAddTask}>
+                </Button>
+
+            </View>
           </Section>
           <Section title="See Your Changes">
             <ReloadInstructions />
@@ -84,8 +126,17 @@ function App(){
           <Section title="Debug">
             <DebugInstructions />
           </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
+          <Section title="">
+            <View>
+              {tasks.map(task => (
+                <View key={task.id}>
+                  <Pressable>
+                    <Text>{task.text}</Text>
+                  </Pressable>
+                  
+                </View>
+              ))}
+            </View>
           </Section>
           <LearnMoreLinks />
         </View>
