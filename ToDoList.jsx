@@ -7,7 +7,7 @@ import {
     Pressable
   } from 'react-native';
 
-function ToDoList( tasks) {
+function ToDoList() {
 
 
     return (

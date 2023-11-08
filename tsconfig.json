@@ -2,6 +2,7 @@
   "compilerOptions": {
     "jsx": "react"
   },
-  
-  "extends": "@tsconfig/react-native/tsconfig.json"
+  "include":["C:/Users/izalu/source/repos/cprg303-TodoListMdevProj/*.jsx"],
+
 }
+  
