@@ -32,6 +32,10 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 
+import  TodoForm from './TodoForm.jsx';
+import TodoList from './TodoList.jsx';
+
+
 
 function Section({children, title}){
   const isDarkMode = useColorScheme() === 'dark';
@@ -117,64 +121,18 @@ function App(){
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="To do List">
+          <Section title="To do form">
             <View>
-                <TextInput
-                placeholder='Enter a task'
-                onChangeText={(text) => setNewTask(text)}
-                value = {newTask}
-                >
-                </TextInput>
-
-                <Button 
-                title='Add Task'
-                onPress={handleAddTask}>
-                </Button>
-
+                <TodoForm
+                newTask={newTask}
+                setNewTask={setNewTask}
+                handleAddTask={handleAddTask}
+                ></TodoForm>
             </View>
           </Section>
 
-          <Section title="Task List">
-          <View>
-            {/*add the to do list here*/}
-            {toDoList.map((task) => (
-              <View
-              key={task.id}
-              style={{
-                flexDirection: 'row',
-                justifyContent:'space-between',
-                marginBottom: 5,
-              }}
-              >
-                <Pressable 
-                key={task.id}
-                onPress={() => handleCompleteTask(task.id)}
-                style={ ({ pressed}) => [
-                  {
-                    backgroundColor: pressed
-                      ? 'rgb(210, 230, 255)'
-                      : task.isComplete
-                      ? 'rgb(200, 200, 200)'
-                      : 'white',
-                    padding: 8,
-                    flex: 1,
-                  }
-                ]}
-                >
-                  <Text>{task.text}</Text>
-                </Pressable>
-                <View
-                style = {{width: 100}}>
-                  <Button
-                  title={task.isComplete ? 'Completed' : 'Complete'}
-                  onPress={() => handleCompleteTask(task.id)}
-                  />
-                </View>
-                  
-              </View>
-            ))}
-
-          </View>
+          <Section title="To do List">
+            <TodoList toDoList={toDoList} handleCompleteTask={handleCompleteTask}></TodoList>
         </Section>
         </View>
       </ScrollView>
