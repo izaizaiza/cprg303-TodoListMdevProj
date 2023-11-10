@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "jsx": "react"
-  },
-  "include":["C:/Users/izalu/source/repos/cprg303-TodoListMdevProj/*.jsx"],
-  "exclude":["node_modules"]
-}
-  
