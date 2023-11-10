@@ -72,7 +72,9 @@ function App(){
 
   // create state variable to hold the to do list
   const [toDoList, setToDoList] = useState([
-    {id:1, text:'Learn React Native', isComplete: false},
+    {id:1, text:'Do laundry', isComplete: false},
+    {id:2, text:'Go to gym', isComplete: false},
+    {id:3, text:'Walk dog', isComplete: false},
   ]);
 
   // create state variable to hold the new task
