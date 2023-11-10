@@ -20,6 +20,7 @@ import {
   View,
   Button,
   Pressable,
+  Modal,
 } from 'react-native';
 
 import {
@@ -65,33 +66,42 @@ function App(){
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  //state variable for the new task
-  const [newTask, setNewTask] = React.useState('');
-
-  //state variable for addition of tasks
-  const [tasks, setTasks] = React.useState([
-    {id: 1, text: 'Task 1', completed: false},
-    {id: 2, text: 'Task 2', completed: false},
-    {id: 3, text: 'Task 3', completed: false},
+  // create state variable to hold the to do list
+  const [toDoList, setToDoList] = useState([
+    {id:1, text:'Learn React Native', isComplete: false},
   ]);
 
-  // function to handle the addition of tasks
-    // add a handler for handling task
-    const handleAddTask = () => {
+  // create state variable to hold the new task
+  const [newTask, setNewTask] = useState('');
 
-      // create a new task
-      const task = {
-      id: tasks.length + 1,
+  //create handler to add a task to the to do list
+  const handleAddTask = () => {
+    //create a new task object
+    const task = {
+      id: toDoList.length + 1,
       text: newTask,
-      completed: false
-      }
+      isComplete: false,
+    };
 
-      // update the tasks
-      setTasks([...tasks, task]);
+    //update the to do list with the new task
+    setToDoList([...toDoList, task]);
 
-      // reset the newTask
-      setNewTask('');
+    //clear the new task
+    setNewTask('');
   }
+
+
+  //create handler to mark a task as complete
+  const handleCompleteTask = (id) => {
+    setToDoList( (prevList) => 
+      prevList.map((task) => 
+      task.id === id ? {...task, isComplete: !task.isComplete} : task)
+    );
+  };
+
+
+
+  
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -111,34 +121,61 @@ function App(){
             <View>
                 <TextInput
                 placeholder='Enter a task'
-                onChange={text => setNewTask(text)}>
+                onChangeText={(text) => setNewTask(text)}
+                value = {newTask}
+                >
                 </TextInput>
 
                 <Button 
-                title='Add Task' onPress={handleAddTask}>
+                title='Add Task'
+                onPress={handleAddTask}>
                 </Button>
 
             </View>
           </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="">
-            <View>
-              {tasks.map(task => (
-                <View key={task.id}>
-                  <Pressable>
-                    <Text>{task.text}</Text>
-                  </Pressable>
-                  
+
+          <Section title="Task List">
+          <View>
+            {/*add the to do list here*/}
+            {toDoList.map((task) => (
+              <View
+              key={task.id}
+              style={{
+                flexDirection: 'row',
+                justifyContent:'space-between',
+                marginBottom: 5,
+              }}
+              >
+                <Pressable 
+                key={task.id}
+                onPress={() => handleCompleteTask(task.id)}
+                style={ ({ pressed}) => [
+                  {
+                    backgroundColor: pressed
+                      ? 'rgb(210, 230, 255)'
+                      : task.isComplete
+                      ? 'rgb(200, 200, 200)'
+                      : 'white',
+                    padding: 8,
+                    flex: 1,
+                  }
+                ]}
+                >
+                  <Text>{task.text}</Text>
+                </Pressable>
+                <View
+                style = {{width: 100}}>
+                  <Button
+                  title={task.isComplete ? 'Completed' : 'Complete'}
+                  onPress={() => handleCompleteTask(task.id)}
+                  />
                 </View>
-              ))}
-            </View>
-          </Section>
-          <LearnMoreLinks />
+                  
+              </View>
+            ))}
+
+          </View>
+        </Section>
         </View>
       </ScrollView>
     </SafeAreaView>
