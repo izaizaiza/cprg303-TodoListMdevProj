@@ -82,18 +82,26 @@ function App(){
 
   //create handler to add a task to the to do list
   const handleAddTask = () => {
-    //create a new task object
-    const task = {
-      id: toDoList.length + 1,
-      text: newTask,
-      isComplete: false,
-    };
+    
+    //check if the task already exists
+    if (toDoList.some((task) => task.text === newTask)){
+      alert("Task already exists")
+    }
+    else {
+      //create a new task object
+      const task = {
+        id: toDoList.length + 1,
+        text: newTask,
+        isComplete: false,};
+      
+      //update the to do list with the new task
+      setToDoList([...toDoList, task]);
 
-    //update the to do list with the new task
-    setToDoList([...toDoList, task]);
+      //clear the new task
+      setNewTask('');
+    }
 
-    //clear the new task
-    setNewTask('');
+    
   }
 
 
